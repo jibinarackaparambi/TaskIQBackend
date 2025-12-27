@@ -31,6 +31,12 @@ class ApplicationSerializer(serializers.ModelSerializer):
         fields = ('client_id','client_secret')
 
 class TaskSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(
+        read_only=True
+        # or, if you really need it writable elsewhere:
+        # queryset=User.objects.all(),
+        # required=False
+    )
     class Meta:
         model = Task
         fields = "__all__"
