@@ -27,14 +27,23 @@ class ClientDetails(generics.GenericAPIView):
 
     # ✅ DRF expects this exact name
     cache_key = "client_details_app"
-    cache_timeout = 300  # 5 minutes
+    cache_timeout = 60
     
     def get_object(self):
         return Application.objects.first()
+
+    def get_cache_key(self, request):
+        # ✅ User-specific cache key
+        user_id = getattr(request.user, 'id', 'anonymous')
+        return f"client_details_app:{user_id}"
     
     def get(self, request, *args, **kwargs):
+        # print("@@@@@@@@@@@@@@@@@")
+        # cache_key = self.get_cache_key(request)
+        cache_key = "client_details_app_global"
+        print(cache_key, "cache_key")
         # Check Redis cache first
-        cached_data = cache.get(self.cache_key)
+        cached_data = cache.get(cache_key)
         if cached_data is not None:
             return Response(cached_data)
         

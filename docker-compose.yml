@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    command: gunicorn taskapp_backend.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis 
+    environment:
+      - REDIS_URL=redis://redis:6379/1 
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis: 
+    image: redis:alpine
+    ports:
+      - "6379:6379"  # Optional: for redis-cli access
+    volumes:
+      - redis_data:/data  # Persist Redis data
+    restart: unless-stopped
+volumes:
+  postgres_data:
+  redis_data:
