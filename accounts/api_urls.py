@@ -8,7 +8,7 @@ router.register(r"tasks", TaskViewSet, basename="task")
 
 urlpatterns = [
     # path("login/", CustomLoginView.as_view(), name="login"),
-    path("auth/register/", RegisterView.as_view(), name="register"),
+    path("auth/register/", RegisterView.as_view(), name="custom-register"),
     path("auth/client_details/", ClientDetails.as_view(), name="client_details"),
     path("", include(router.urls)),
 ]

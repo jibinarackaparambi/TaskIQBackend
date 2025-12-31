@@ -30,6 +30,12 @@ services:
     volumes:
       - redis_data:/data  # Persist Redis data
     restart: unless-stopped
+  test:
+    build: .
+    # env_file: .env
+    volumes:
+      - .:/app
+    command: pytest -q
 volumes:
   postgres_data:
   redis_data:
