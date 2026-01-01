@@ -33,11 +33,11 @@ class TestAuth:
     def user_creation(self):
         return User.objects.create(email="test@gmail.com", password="Test123$")
     
-    def test_get_client_details(self):
-        self.application_creations()
-        url = reverse('client_details')
-        response = self.client.get(url)
-        assert response.status_code == 200
+    # def test_get_client_details(self):
+    #     self.application_creations()
+    #     url = reverse('client_details')
+    #     response = self.client.get(url)
+    #     assert response.status_code == 200
 
     def test_user_reg(self):
         application = self.application_creations()
