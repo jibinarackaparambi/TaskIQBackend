@@ -1,7 +1,9 @@
 """
 Django settings for taskapp_backend project.
 """
-
+import os
+from urllib.parse import urlparse
+from dj_database_url import parse as db_url
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -81,18 +83,41 @@ CACHES = {
         }
     }
 }
+DATABASE_URL = os.getenv("DATABASE_URL")
+import os
+from urllib.parse import urlparse
 
-# Database (keep your existing)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mydb',
-        'USER': 'myuser',
-        'PASSWORD': 'mypassword',
-        'HOST': 'db',
-        'PORT': '5432',
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if DATABASE_URL:
+    # using dj-database-url is even nicer, but here's a simple parse
+    DATABASES = {
+        "default": db_url(DATABASE_URL)
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.getenv("POSTGRES_DB", "mydb"),
+            "USER": os.getenv("POSTGRES_USER", "myuser"),
+            "PASSWORD": os.getenv("POSTGRES_PASSWORD", "mypass"),
+            "HOST": os.getenv("POSTGRES_HOST", "localhost"),
+            "PORT": os.getenv("POSTGRES_PORT", "5432"),
+        }
+    }
+
+
+# # Database (keep your existing)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'mydb',
+#         'USER': 'myuser',
+#         'PASSWORD': 'mypassword',
+#         'HOST': 'db',
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation
