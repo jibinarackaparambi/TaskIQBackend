@@ -41,11 +41,13 @@ jobs:
 
       - name: Run migrations
         env:
-          DATABASE_URL: postgres://myuser:mypass@localhost:5432/mydb
+          DATABASE_URL: postgres://myuser:mypass@db:5432/mydb  # ✅ unified
         run: |
           python manage.py migrate
 
       - name: Run tests with coverage
+        env:
+          DATABASE_URL: postgres://myuser:mypass@db:5432/mydb  # ✅ unified
         run: |
           coverage run -m pytest
           coverage report -m
